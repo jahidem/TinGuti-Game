@@ -3,6 +3,7 @@
 #include"TextureHolder.h"
 #include"enums.h"
 #include<iostream>
+#include"ResourceHolder.h"
 class Game {
 public:
     Game();
@@ -29,7 +30,8 @@ private:
     sf::Vector2f posThree3 = sf::Vector2f(576, 720);
 
     sf::RenderWindow mWindow;
-    TextureHolder textures;
+    ResourceHolder<sf::Texture, textureId> textures;
+    //TextureHolder textures;
     sf::Sprite gameBoard,mPlayerOne,mPlayerTwo;
     bool mIsMovingUp = false;
     bool mIsMovingDown = false;
