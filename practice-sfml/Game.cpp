@@ -1,21 +1,41 @@
-#include "Game.hpp"
+#include "Game.h"
 
 Game::Game()
-    :mWindow(sf::VideoMode(640, 480), "Firsto Aplicatian")
-    , mPlayer() {
-    mPlayer.setRadius(40.f);
-    mPlayer.setPosition(100.f, 100.f);
-    mPlayer.setFillColor(sf::Color::Cyan);
+    :mWindow(sf::VideoMode(800, 950), "It's TinGuti")
+    {
+    if(!textures.load(textureId::IdLandscape, "asset/board2.jpg"))
+        std::cout<<"Error load asset/board2.jpg";
+    if (!textures.load(textureId::IdPlayerOne, "asset/playerone5.png"))
+        std::cout << "Error load asset/palyer_one2.png";
+    if (!textures.load(textureId::IdPlayerTwo, "asset/playetwo2.png"))
+        std::cout << "Error load asset/palyertwo.png";
 
+    gameBoard.setTexture(textures.get(textureId::IdLandscape));
+    gameBoard.setPosition(0.f,0.f);
+
+    mPlayerOne.setTexture(textures.get(textureId::IdPlayerOne));
+    mPlayerOne.setPosition(30.f, 30.f);
+
+    mPlayerTwo.setTexture(textures.get(textureId::IdPlayerTwo));
+    mPlayerTwo.setPosition(300.f, 300.f);
 }
 
 void Game::run() {
+    sf::Clock clock;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
+
     while (mWindow.isOpen()) {
         processEvents();
-        update();
+        timeSinceLastUpdate += clock.restart();
+        while (timeSinceLastUpdate > TimePerFrame) {
+            timeSinceLastUpdate -= TimePerFrame;
+            processEvents();
+            update(TimePerFrame);
+        }
         render();
     }
 }
+
 
 void Game::processEvents() {
     sf::Event event;
@@ -33,32 +53,38 @@ void Game::processEvents() {
         }
     }
 }
-void Game::update() {
+void Game::update(sf::Time deltaTime) {
     sf::Vector2f movement(0.f, 0.f);
     if (mIsMovingRight)
-        movement.x += 1.f;
+        movement.x += PlayerSpeed;
     if (mIsMovingLeft)
-        movement.x -= 1.f;
+        movement.x -= PlayerSpeed;
     if (mIsMovingUp)
-        movement.y += 1.f;
+        movement.y -= PlayerSpeed;
     if (mIsMovingDown)
-        movement.y -= 1.f;
-    mPlayer.move(movement);
+        movement.y += PlayerSpeed;
+    mPlayerOne.move(movement * deltaTime.asSeconds());
 }
 void Game::render() {
-    mWindow.clear();
-    mWindow.draw(mPlayer);
+    sf::Color color = sf::Color(123, 123, 142,255);
+    mWindow.clear(color);
+    mWindow.draw(gameBoard);
+    mWindow.draw(mPlayerOne);
+    mWindow.draw(mPlayerTwo);
+    
     mWindow.display();
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
-    if (sf::Keyboard::W)
+    if (key == sf::Keyboard::W)
         mIsMovingUp = isPressed;
-    else if (sf::Keyboard::S)
+    else if (key == sf::Keyboard::S)
         mIsMovingDown = isPressed;
-    else if (sf::Keyboard::A)
+    else if (key == sf::Keyboard::A)
         mIsMovingLeft = isPressed;
-    else if (sf::Keyboard::D)
+    else if (key == sf::Keyboard::D)
         mIsMovingRight = isPressed;
 
 }
+
+
