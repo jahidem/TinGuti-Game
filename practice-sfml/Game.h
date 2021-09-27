@@ -14,6 +14,20 @@ private:
     void handlePlayerInput(sf::Keyboard::Key, bool);
 
 private:
+    sf::Vector2f pos= sf::Vector2f();
+    //Guti Position
+    sf::Vector2f posOne1 = sf::Vector2f(-30.f,-46.f);
+    sf::Vector2f posOne2 = sf::Vector2f(-283.f, -46.f);
+    sf::Vector2f posOne3 = sf::Vector2f(-576.f, -46.f);
+
+    sf::Vector2f posTwo1 = sf::Vector2f(-30.f, 346.f);
+    sf::Vector2f posTwo2 = sf::Vector2f(283.f, 346.f);
+    sf::Vector2f posTwo3 = sf::Vector2f(576.f, 346.f);
+
+    sf::Vector2f posThree1 = sf::Vector2f(-30, 720);
+    sf::Vector2f posThree2 = sf::Vector2f(283, 720);
+    sf::Vector2f posThree3 = sf::Vector2f(576, 720);
+
     sf::RenderWindow mWindow;
     TextureHolder textures;
     sf::Sprite gameBoard,mPlayerOne,mPlayerTwo;

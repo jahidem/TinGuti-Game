@@ -4,7 +4,7 @@
 class TextureHolder
 {
 	public:
-		bool load(textureId,const std::string &);
+		void load(textureId,const std::string &);
 		sf::Texture& get(textureId);
 		const sf::Texture& get(textureId) const;
 	private:

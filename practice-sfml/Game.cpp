@@ -3,21 +3,18 @@
 Game::Game()
     :mWindow(sf::VideoMode(800, 950), "It's TinGuti")
     {
-    if(!textures.load(textureId::IdLandscape, "asset/board2.jpg"))
-        std::cout<<"Error load asset/board2.jpg";
-    if (!textures.load(textureId::IdPlayerOne, "asset/playerone5.png"))
-        std::cout << "Error load asset/palyer_one2.png";
-    if (!textures.load(textureId::IdPlayerTwo, "asset/playetwo2.png"))
-        std::cout << "Error load asset/palyertwo.png";
+    textures.load(textureId::IdLandscape, "asset/board2.jpg");
+    textures.load(textureId::IdPlayerOne, "asset/playerone5.png");
+    textures.load(textureId::IdPlayerTwo, "asset/playetwo2.png");
 
     gameBoard.setTexture(textures.get(textureId::IdLandscape));
     gameBoard.setPosition(0.f,0.f);
 
     mPlayerOne.setTexture(textures.get(textureId::IdPlayerOne));
-    mPlayerOne.setPosition(30.f, 30.f);
+    mPlayerOne.setPosition(posThree1);
 
     mPlayerTwo.setTexture(textures.get(textureId::IdPlayerTwo));
-    mPlayerTwo.setPosition(300.f, 300.f);
+    mPlayerTwo.setPosition(290.f, 340.f);
 }
 
 void Game::run() {
@@ -32,7 +29,10 @@ void Game::run() {
             processEvents();
             update(TimePerFrame);
         }
-        render();
+        const  sf::Vector2f hi = mPlayerOne.getPosition();
+        if (pos.x != hi.x || pos.y != hi.y) 
+            std::cout << pos.x << " " << pos.y<<"\n", pos.x = hi.x, pos.y = hi.y;
+         render();
     }
 }
 
@@ -64,6 +64,7 @@ void Game::update(sf::Time deltaTime) {
     if (mIsMovingDown)
         movement.y += PlayerSpeed;
     mPlayerOne.move(movement * deltaTime.asSeconds());
+
 }
 void Game::render() {
     sf::Color color = sf::Color(123, 123, 142,255);
