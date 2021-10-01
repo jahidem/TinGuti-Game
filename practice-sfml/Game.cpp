@@ -42,7 +42,7 @@ void Game::run() {
        std::cout << "error";
    } 
    //music.setPitch(2);           // increase the pitch
-   music.setVolume(5);         // reduce the volume
+   music.setVolume(10);         // reduce the volume
    music.setLoop(true);
     music.play();
    
@@ -87,6 +87,7 @@ void Game::processEvents() {
        switch (event.type){
          case sf::Event::Closed:
                 mWindow.close();
+                break;
         case sf::Event::MouseButtonPressed:
             handlePlayerInput(event.key.code, true);
             break;
@@ -95,6 +96,10 @@ void Game::processEvents() {
             break;
             
         }
+        if (event.key.code == sf::Keyboard::Escape) {
+            mWindow.close();
+
+    }
     }
 }
 void Game::update(sf::Time deltaTime) {
@@ -168,7 +173,7 @@ void Game::afterGmRender() {
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
-    sf::Vector2i pos = sf::Mouse::getPosition(mWindow); std::cout << pos.x << " " << pos.y << "\n";
+    sf::Vector2i pos = sf::Mouse::getPosition(mWindow); 
     if (key == sf::Mouse::Left){
         if (isPressed) {
             sf::Cursor cursor;
@@ -188,6 +193,7 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
                 mWindow.setMouseCursor(cursor);
         }
         }
+    
    
 
 }
