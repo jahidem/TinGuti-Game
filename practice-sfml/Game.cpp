@@ -12,7 +12,26 @@ Game::Game()
     for (int u = 3; u < 6; u++) allPlayer[u].setPosition(mInitial[u+3]);
     allPlayer[6].setPosition(mInitial[9]);
 
-    sf::Vector2f pos =allPlayer[0].getPosition(); std::cout << pos.x << " " << pos.y << "\n";
+    if(!fontWin.loadFromFile("asset/karma.ttf")) std::cout<<"Couldn't load";
+    if (!fontNorm.loadFromFile("asset/righteous.ttf")) std::cout << "Couldn't load";
+    
+    mWinText.setFont(fontWin);
+    mWinText.setString("Win!!");
+    mWinText.setCharacterSize(70);
+    mWinText.setFillColor(sf::Color::Cyan);
+    //mWinText.setStyle(sf::Text:: );
+    mWinText.setPosition(240.f, 385.f);
+
+    textOne.setFont(fontNorm);
+    textOne.setCharacterSize(20);
+    textOne.setFillColor(sf::Color::Cyan);
+
+    textTwo.setFont(fontNorm);
+    textTwo.setCharacterSize(20);
+    textTwo.setFillColor(sf::Color::Yellow);
+
+    textOne.setPosition(350.f,20.f);
+    textTwo.setPosition(350.f,920.f);
 }
 
 void Game::run() {
@@ -36,15 +55,28 @@ void Game::run() {
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
     while (mWindow.isOpen()) {
-        processEvents();
-        timeSinceLastUpdate += clock.restart();
-        while (timeSinceLastUpdate > TimePerFrame) {
-            timeSinceLastUpdate -= TimePerFrame;
+        if (gameRun) {
             processEvents();
-            update(TimePerFrame);
+            timeSinceLastUpdate += clock.restart();
+            while (timeSinceLastUpdate > TimePerFrame) {
+                timeSinceLastUpdate -= TimePerFrame;
+                processEvents();
+                update(TimePerFrame);
+            }
+
+            if(!CheckgameFinish()) update(TimePerFrame),render();
+            render();
         }
-        
-         render();
+        else {
+            afterGmProcessEvents();
+            timeSinceLastUpdate += clock.restart();
+            while (timeSinceLastUpdate > TimePerFrame) {
+                timeSinceLastUpdate -= TimePerFrame;
+                afterGmProcessEvents();
+                afterGmUpdate(TimePerFrame);
+            }
+            afterGmRender();
+        }
     }
 }
 
@@ -66,6 +98,15 @@ void Game::processEvents() {
     }
 }
 void Game::update(sf::Time deltaTime) {
+    std::string str = "Player One: ";
+    str += std::to_string(mWin[0]);
+    textOne.setString(str);
+  
+    str = "Player Two: ";
+    str += std::to_string(mWin[1]);
+    textTwo.setString(str);
+    
+
     if (mPing) {
 
         for (int u = 0; u < 6; u++) {
@@ -103,15 +144,26 @@ void Game::update(sf::Time deltaTime) {
                     static_cast<sf::Vector2f>
                     (sf::Mouse::getPosition(mWindow)) - sf::Vector2f(50.f, 50.f));
     }
-    
+   
 
 }
 void Game::render() {
-    sf::Color color = sf::Color(123, 123, 142,255);
-    mWindow.clear(color);
-    for (int u = 6; u >= 0; u--) {
-        mWindow.draw(allPlayer[u]);
-    }
+        sf::Color color = sf::Color(123, 123, 142, 255);
+        mWindow.clear(color);
+        for (int u = 6; u >= 0; u--) {
+            mWindow.draw(allPlayer[u]);
+        }
+        mWindow.draw(textOne);
+        mWindow.draw(textTwo);
+    mWindow.display();
+}
+
+void Game::afterGmRender() {
+    if (mWin[0] > mWin[1])
+        mWindow.draw(allPlayer[0]);
+    else
+        mWindow.draw(allPlayer[3]);
+    mWindow.draw(mWinText);
     mWindow.display();
 }
 
@@ -149,3 +201,72 @@ bool Game::noneThere(int toGo, int meNow) {
     return true;
 }
 
+
+bool Game::CheckgameFinish() {
+    bool runIt = true;
+    int poss[3];
+    for (int u = 0; u < 3; u++) {
+        poss[u] = allPlayer[u].mPos;
+    }
+    std::sort(poss, poss + 3);
+    int f;
+    for (int u = 0; u < 7; u++) {
+        f = 1;
+        for (int v = 0; v < 3; v++) {
+            if (finishState[u][v] != poss[v]) f = 0;
+        }
+        if (f) { runIt = false,mWin[0]++; break; }
+    }
+
+    for (int u = 3; u < 6; u++) {
+        poss[u-3] = allPlayer[u].mPos;
+    }
+    std::sort(poss, poss + 3);
+    for (int u = 1; u < 8; u++) {
+        f = 1;
+        for (int v = 0; v < 3; v++) {
+            if (finishState[u][v] != poss[v]) f = 0;
+        }
+        if (f) { runIt = false, mWin[1]++; break; }
+    }
+
+    return gameRun = runIt;
+}
+
+void Game::afterGmProcessEvents()
+{
+    sf::Event event;
+    while (mWindow.pollEvent(event)) {
+        switch (event.type) {
+        case sf::Event::Closed:
+            mWindow.close();
+        case sf::Event::KeyPressed:
+            gameRun = true, mallReset();
+
+        }
+    }
+}
+
+void Game::afterGmUpdate(sf::Time)
+{
+    if (mWin[0] > mWin[1])
+        allPlayer[0].setPosition(400.f, 400.f);
+    else
+        allPlayer[3].setPosition(400.f, 400.f);
+   
+}
+
+
+
+void  Game::mallReset() {
+    for (int u = 0; u < 6; u++) mMove[u] = false;
+    allPlayer[6].mPos= 6;
+    for (int u = 0; u < 3; u++) allPlayer[u].mPos=u;
+    for (int u = 3; u < 6; u++) allPlayer[u].mPos= u + 3;
+
+    for (int u = 0; u < 3; u++) allPlayer[u].setPosition(mInitial[u]);
+    for (int u = 3; u < 6; u++) allPlayer[u].setPosition(mInitial[u + 3]);
+    allPlayer[6].setPosition(mInitial[9]);
+}
+
+int Game::mWin[2] = {};

@@ -13,6 +13,11 @@ private:
     void render();
     void handlePlayerInput(sf::Keyboard::Key, bool);
     bool noneThere(int, int);
+    bool CheckgameFinish();
+    void afterGmProcessEvents();
+    void afterGmUpdate(sf::Time);
+    void afterGmRender();
+    void mallReset();
 
 private:
     //Guti Position
@@ -39,11 +44,24 @@ private:
         {7,7,7,7,7,6,4,8},
         {8,8,8,8,8,5,4,7}
     };
-
+    const int finishState[8][3] = {
+        {6,7,8},
+        {2,5,8},
+        {0,4,8},
+        {2,4,6},
+        {1,4,7},
+        {3,4,5},
+        {0,3,6},
+        {0,1,2}
+    };
+    static int mWin[];
     sf::RenderWindow mWindow;
     Entity allPlayer[7] ;
     int allPos[6];
-    bool mMove[7], mPing=false,turn=1;
+    bool mMove[7], mPing=false,turn=1, gameRun=true;
+    sf::Text mWinText,textOne,textTwo;
+    sf::Font fontWin,fontNorm;
+
 
     const int PlayerSpeed = 300;
     const sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
