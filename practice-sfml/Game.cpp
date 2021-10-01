@@ -37,12 +37,12 @@ Game::Game()
 void Game::run() {
     
    sf::Music music;
-   if (!music.openFromFile("asset/Aoi_Shiori.ogg"))
+   if (!music.openFromFile("asset/Scary_wav.ogg"))
    {
        std::cout << "error";
    } 
    //music.setPitch(2);           // increase the pitch
-   music.setVolume(10);         // reduce the volume
+   music.setVolume(5);         // reduce the volume
    music.setLoop(true);
     music.play();
    
