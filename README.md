@@ -17,4 +17,4 @@ making My first game using SFML!!
       
 <img src="https://github.com/jahidem/pc/blob/master/imagee/tinguti1.PNG" width="600">
 <img src="https://github.com/jahidem/pc/blob/master/imagee/tinguti2.PNG" width="600">
-<img src="https://github.com/jahidem/pc/blob/master/imagee/tinguti2.PNG" width="600">
+<img src="https://github.com/jahidem/pc/blob/master/imagee/tinguti3.PNG" width="600">
