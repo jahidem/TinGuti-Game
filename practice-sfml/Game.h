@@ -1,9 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include"TextureHolder.h"
-#include"enums.h"
+#include <SFML/Audio.hpp>
 #include<iostream>
-#include"ResourceHolder.h"
+#include "Entity.h"
 class Game {
 public:
     Game();
@@ -15,28 +14,36 @@ private:
     void handlePlayerInput(sf::Keyboard::Key, bool);
 
 private:
-    sf::Vector2f pos= sf::Vector2f();
     //Guti Position
-    sf::Vector2f posOne1 = sf::Vector2f(-30.f,-46.f);
-    sf::Vector2f posOne2 = sf::Vector2f(-283.f, -46.f);
-    sf::Vector2f posOne3 = sf::Vector2f(-576.f, -46.f);
-
-    sf::Vector2f posTwo1 = sf::Vector2f(-30.f, 346.f);
-    sf::Vector2f posTwo2 = sf::Vector2f(283.f, 346.f);
-    sf::Vector2f posTwo3 = sf::Vector2f(576.f, 346.f);
-
-    sf::Vector2f posThree1 = sf::Vector2f(-30, 720);
-    sf::Vector2f posThree2 = sf::Vector2f(283, 720);
-    sf::Vector2f posThree3 = sf::Vector2f(576, 720);
+    const sf::Vector2f mInitial[10] = {
+     sf::Vector2f(57.f,55.f),
+     sf::Vector2f(360.f, 55.f),
+     sf::Vector2f(660.f, 55.f),
+     sf::Vector2f(70.f, 496.f),
+     sf::Vector2f(370.f, 496.f),
+     sf::Vector2f(655.f, 496.f),
+     sf::Vector2f(75, 836)  ,
+     sf::Vector2f(375, 836)  ,
+     sf::Vector2f(655, 836)  ,
+    sf::Vector2f(0.f,0.f)
+    };
+    const int mTo[9][8] = {
+        {0,0,0,0,0,3,1,4},
+        {1,1,1,1,1,4,0,2},
+        {2,2,2,2,2,1,4,5},
+        {3,3,3,3,3,0,4,6},
+        {4,0,1,2,3,5,6,7},
+        {5,5,5,5,5,2,4,8},
+        {6,6,6,6,6,3,4,7},
+        {7,7,7,7,7,6,4,8},
+        {8,8,8,8,8,5,4,7}
+    };
 
     sf::RenderWindow mWindow;
-    ResourceHolder<sf::Texture, textureId> textures;
-    //TextureHolder textures;
-    sf::Sprite gameBoard,mPlayerOne,mPlayerTwo;
-    bool mIsMovingUp = false;
-    bool mIsMovingDown = false;
-    bool mIsMovingRight = false;
-    bool mIsMovingLeft = false;
-    const int PlayerSpeed = 400;
+    Entity allPlayer[7] ;
+    int allPos[6];
+    bool mMove[7], mPing=false,turn=1;
+
+    const int PlayerSpeed = 300;
     const sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
 };
