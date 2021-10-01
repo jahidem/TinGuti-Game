@@ -29,7 +29,7 @@ void Game::run() {
    
 
     sf::Cursor cursor;
-    if (cursor.loadFromSystem(sf::Cursor::Hand))
+    if (cursor.loadFromSystem(sf::Cursor::Arrow))
         mWindow.setMouseCursor(cursor);
 
     sf::Clock clock;
@@ -75,25 +75,25 @@ void Game::update(sf::Time deltaTime) {
                 if (mInitial[u] == pos) f = 0;
             }
             if (f) {
-                int mn=1e8;
+                std::vector<std::pair<int, int>> disFromPos;
                 for (int v = 0; v < 8; v++) {
-                    mn = std::min(mn,int( abs(mInitial[mTo[u][v]].x- allPlayer[u].getPosition().x)+
-                        abs(mInitial[mTo[u][v]].y - allPlayer[u].getPosition().y)));
-                }
-                for (int v = 0; v < 8; v++) {
-                    if (mn == (int(abs(mInitial[mTo[u][v]].x - allPlayer[u].getPosition().x) +
-                        abs(mInitial[mTo[u][v]].y - allPlayer[u].getPosition().y)))) {
-                        allPlayer[u].setPosition(mInitial[mTo[u][v]]), mPing=false,turn=1-turn;
-                        allPlayer[u].mPos = mTo[u][v];
-                        break;
+                    int dis = int(abs(mInitial[mTo[allPlayer[u].mPos][v]].x - allPlayer[u].getPosition().x) +
+                        abs(mInitial[mTo[allPlayer[u].mPos][v]].y - allPlayer[u].getPosition().y));
+                    disFromPos.push_back({ dis,mTo[allPlayer[u].mPos][v] });
+
+                }sort(disFromPos.begin(), disFromPos.end());
+                for (auto x : disFromPos) {
+                    if (noneThere(x.second, allPlayer[u].mPos)) {
+                        allPlayer[u].setPosition(mInitial[x.second]), mPing = false;
+                            if (allPlayer[u].mPos != x.second) turn = 1 - turn;
+                            allPlayer[u].mPos = x.second;
+                            break;
                     }
                 }
-
-
             }
-
         }
-    }
+
+     }
     else {
         int u = 0;
         if (!turn) u = 3;
@@ -119,7 +119,9 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
     sf::Vector2i pos = sf::Mouse::getPosition(mWindow); std::cout << pos.x << " " << pos.y << "\n";
     if (key == sf::Mouse::Left){
         if (isPressed) {
-            
+            sf::Cursor cursor;
+            if (cursor.loadFromSystem(sf::Cursor::Hand))
+                mWindow.setMouseCursor(cursor);
             for (int u = 0; u < 6; u++) {
                 int Px =(int) allPlayer[u].getPosition().x,
                     Py =(int) allPlayer[u].getPosition().y;
@@ -127,10 +129,23 @@ void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
                     mMove[u] = true,mPing=false;
             }
         }
-        else for(int u=0;u<6;u++) mMove[u]=false,mPing=true;
+        else {
+            for (int u = 0; u < 6; u++) mMove[u] = false, mPing = true;
+            sf::Cursor cursor;
+            if (cursor.loadFromSystem(sf::Cursor::Arrow))
+                mWindow.setMouseCursor(cursor);
+        }
         }
    
 
 }
 
+bool Game::noneThere(int toGo, int meNow) {
+    if (toGo != meNow) {
+        for (int u = 0; u < 6; u++) 
+            if(allPlayer[u].mPos == toGo)
+        return false;
+    }
+    return true;
+}
 

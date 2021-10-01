@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
-#include<iostream>
+#include<iostream> 
 #include "Entity.h"
 class Game {
 public:
@@ -12,6 +12,7 @@ private:
     void update(sf::Time);
     void render();
     void handlePlayerInput(sf::Keyboard::Key, bool);
+    bool noneThere(int, int);
 
 private:
     //Guti Position
@@ -19,9 +20,9 @@ private:
      sf::Vector2f(57.f,55.f),
      sf::Vector2f(360.f, 55.f),
      sf::Vector2f(660.f, 55.f),
-     sf::Vector2f(70.f, 496.f),
-     sf::Vector2f(370.f, 496.f),
-     sf::Vector2f(655.f, 496.f),
+     sf::Vector2f(50.f, 470.f),
+     sf::Vector2f(360.f, 470.f),
+     sf::Vector2f(660.f, 470.f),
      sf::Vector2f(75, 836)  ,
      sf::Vector2f(375, 836)  ,
      sf::Vector2f(655, 836)  ,
