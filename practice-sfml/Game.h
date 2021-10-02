@@ -11,7 +11,7 @@ private:
     void processEvents();
     void update(sf::Time);
     void render();
-    void handlePlayerInput(sf::Keyboard::Key, bool);
+    void handlePlayerInput(sf::Event, bool);
     bool noneThere(int, int);
     bool CheckgameFinish();
     void afterGmProcessEvents();
@@ -58,11 +58,12 @@ private:
     static int mWin[];
     static int preFirst;
 
+    sf::RectangleShape mBlur;
     sf::RenderWindow mWindow;
     Entity allPlayer[7] ;
     int allPos[6];
     bool mMove[7], mPing=false,turn=1, gameRun=true;
-    sf::Text mWinText,textOne,textTwo;
+    sf::Text mWinText,textOne, textOne1,textTwo;
     sf::Font fontWin,fontNorm;
 
 

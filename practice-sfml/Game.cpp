@@ -32,6 +32,15 @@ Game::Game()
 
     textOne.setPosition(350.f,20.f);
     textTwo.setPosition(350.f,920.f);
+
+    textOne1.setFont(fontNorm);
+    textOne1.setCharacterSize(20);
+    textOne1.setFillColor(sf::Color::White);
+
+    sf::Color color(123, 123, 123, 15);
+    mBlur.setSize(sf::Vector2f(400.f,150.f));
+    mBlur.setFillColor(color);
+    mBlur.setPosition(200.f, 370.f);
 }
 
 void Game::run() {
@@ -89,15 +98,15 @@ void Game::processEvents() {
                 mWindow.close();
                 break;
         case sf::Event::MouseButtonPressed:
-            handlePlayerInput(event.key.code, true);
+            handlePlayerInput(event, true);
             break;
         case sf::Event::MouseButtonReleased:
-            handlePlayerInput(event.key.code, false);
+            handlePlayerInput(event, false);
             break;
             
         }
         if (event.key.code == sf::Keyboard::Escape) {
-            mWindow.close();
+           // mWindow.close();
 
     }
     }
@@ -164,17 +173,19 @@ void Game::render() {
 }
 
 void Game::afterGmRender() {
+    mWindow.draw(mBlur);
     if (!turn)
         mWindow.draw(allPlayer[0]);
     else
         mWindow.draw(allPlayer[3]);
     mWindow.draw(mWinText);
+    mWindow.draw(textOne1);
     mWindow.display();
 }
 
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed) {
+void Game::handlePlayerInput(sf::Event event, bool isPressed) {
     sf::Vector2i pos = sf::Mouse::getPosition(mWindow); 
-    if (key == sf::Mouse::Left){
+    if (event.key.code == sf::Mouse::Left){
         if (isPressed) {
             sf::Cursor cursor;
             if (cursor.loadFromSystem(sf::Cursor::Hand))
@@ -259,6 +270,9 @@ void Game::afterGmUpdate(sf::Time)
         allPlayer[0].setPosition(400.f, 400.f);
     else
         allPlayer[3].setPosition(400.f, 400.f);
+    textOne1.setString("Press enter to continue playing");
+    textOne1.setPosition(240.f, 480.f);
+   
    
 }
 

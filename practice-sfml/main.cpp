@@ -15,6 +15,7 @@ int main()
 		delete menu;
 		menu = new Menu();
 		pressed = menu->run();
-	}
+}
+
 
 }
