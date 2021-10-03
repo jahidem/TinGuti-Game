@@ -8,7 +8,7 @@ making My first game using SFML!!
 ! Ofcourse a Menu first 
 ! There'll option for PvP or play with computer
 ! I would like to have a AI that always wins
-! palce it on itch.io try to get some feedback
+! put it on itch.io try to get some feedback
       
 ```
 
