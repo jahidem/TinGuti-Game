@@ -12,7 +12,7 @@ making My first game using SFML!!
       
 ```
 
-
+# Be sure to use keyboard to navigate
   ***Here is the progress until now:***
       
 <img src="https://github.com/jahidem/pc/blob/master/imagee/tinguti1.PNG" width="600">
